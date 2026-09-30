@@ -1,0 +1,4 @@
+import { NextResponse } from "next/server";
+import { getAdminContext } from "@/lib/auth";
+export const dynamic="force-dynamic";
+export async function POST(request:Request,{params}:{params:Promise<{id:string}>}){const context=await getAdminContext();if(!context)return NextResponse.json({error:"Cần đăng nhập với tài khoản ERP admin."},{status:401});try{const {id}=await params;const body=await request.json();const {data,error}=await context.supabase.rpc("change_order_status",{p_order_id:id,p_new_status:body.status});if(error)return NextResponse.json({error:error.message.startsWith("Invalid order transition")?"Trạng thái này không phải bước tiếp theo hợp lệ.":"Không thể cập nhật trạng thái đơn hàng."},{status:400});return NextResponse.json(data)}catch{return NextResponse.json({error:"Yêu cầu cập nhật không hợp lệ."},{status:400})}}

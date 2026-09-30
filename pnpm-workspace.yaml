@@ -1,0 +1,5 @@
+packages:
+  - store
+  - erp
+allowBuilds:
+  unrs-resolver: true

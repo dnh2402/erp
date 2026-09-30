@@ -1,0 +1,5 @@
+import { requireAdmin } from "@/lib/auth";
+import { InventoryTable } from "@/components/inventory-table";
+type InventoryProduct={id:string;sku:string;name:string;category:string;price:number;on_hand:number;reserved:number;available:number};
+export const dynamic="force-dynamic";
+export default async function InventoryPage(){const {supabase}=await requireAdmin();const {data}=await supabase.from("products").select("id,sku,name,category,price,on_hand,reserved,available").order("name");const products=(data??[]) as unknown as InventoryProduct[];const low=products.filter(p=>p.available>0&&p.available<10).length;const available=products.reduce((n,p)=>n+Number(p.available),0);return <><div className="page-heading"><div><h1>Tồn kho</h1><p>Reserved là hàng đã giữ cho đơn chờ hoàn tất; available được tính tự động.</p></div><div className="heading-actions"><span className="status-badge low-stock">{low} sản phẩm sắp hết</span><span className="status-badge completed">{available.toLocaleString("vi-VN")} khả dụng</span></div></div><InventoryTable products={products}/></>}

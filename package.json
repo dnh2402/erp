@@ -1,0 +1,12 @@
+{
+  "name": "dseb-commerce-erp",
+  "private": true,
+  "packageManager": "pnpm@11.25.0",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev:store": "pnpm --filter @dseb/store dev",
+    "dev:erp": "pnpm --filter @dseb/erp dev",
+    "build:store": "pnpm --filter @dseb/store build",
+    "build:erp": "pnpm --filter @dseb/erp build"
+  }
+}
